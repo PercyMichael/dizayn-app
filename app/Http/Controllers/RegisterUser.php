@@ -14,9 +14,9 @@ class RegisterUser extends Controller
 
     public function create()
     {
-        // if (Auth::check()) {
-        //     return redirect('/');
-        // }
+        if (Auth::check()) {
+            return redirect('/');
+        }
 
         return view('auth.signup');
     }

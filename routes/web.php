@@ -12,16 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
-    $checkins = Checkin::all();
+    $user = Auth::user();
+
+    // Fetch check-ins for the authenticated user
+    $checkins = Checkin::where('user_id', $user->id)->get();
+    // dd($checkins);
 
     // Group check-ins by month
     $checkinsByMonth = $checkins->groupBy(function ($checkin) {
         return Carbon::parse($checkin->created_at)->format('Y-m');
     });
 
-    dump($checkinsByMonth);
-
-    $user = Auth::user();
+    // dump($checkinsByMonth);
 
     $today = date('Y-m-d'); // Get today's date at the beginning of the day
 
@@ -29,9 +31,38 @@ Route::get('/', function () {
         ->whereDate('created_at', $today)
         ->exists();
 
-    return view('welcome', compact('checkinsByMonth', 'checkedInToday'));
+    // Fetch all users
+    $allUsers = User::all();
+
+    return view('welcome', compact('checkinsByMonth', 'checkedInToday', 'allUsers'));
 })->middleware(['auth', 'verified']);
 
+Route::get('/user/{name}/{id}', function (Request $request) {
+
+    // Fetch check-ins for the authenticated user
+    $checkins = Checkin::where('user_id', $request->id)->get();
+    // dd($checkins);
+
+    // Group check-ins by month
+    $checkinsByMonth = $checkins->groupBy(function ($checkin) {
+        return Carbon::parse($checkin->created_at)->format('Y-m');
+    });
+
+    // dump($checkinsByMonth);
+
+    $today = date('Y-m-d'); // Get today's date at the beginning of the day
+
+    $checkedInToday = Checkin::where('user_id', $request->id)
+        ->whereDate('created_at', $today)
+        ->exists();
+
+    // Fetch all users
+    $allUsers = User::all();
+
+    $username = $request->name;
+
+    return view('user', compact('checkinsByMonth', 'checkedInToday', 'allUsers', 'username'));
+})->middleware(['auth', 'verified']);;
 
 Route::post('/checkin', function () {
 
@@ -40,6 +71,7 @@ Route::post('/checkin', function () {
     Checkin::create([
         'user_id' => $user->id
     ]);
+
 
     return redirect('/')->with('successfull_checkin', 'You have checked in successfully');
 })->middleware(['auth', 'verified']);

@@ -40,7 +40,7 @@
         startTimer();
     </script>
 
-    <x-header />
+    <x-header :users="$allUsers" />
     <div class="mx-auto max-w-screen-md grid md:grid-cols-1 gap-6 p-4">
 
         @if (session('successfull_checkin'))
@@ -77,40 +77,25 @@
             </div>
             @endif
         </x-bladewind::card>
-
-
         @endif
-
-
-
     </div>
 
     <div class="mx-auto max-w-screen-md grid md:grid-cols-1 gap-6 px-4 py-8">
 
-        <ul>
-            @foreach ($checkinsByMonth as $month => $checkins)
-
-            <h2>{{ date('F Y', strtotime($month)) }}</h2>
-            <ul>
-                @foreach ($checkins as $checkin)
-
-                @endforeach
-            </ul>
-            @endforeach
-
-        </ul>
 
         @foreach ($checkinsByMonth as $month => $checkins)
         <x-bladewind::card class="">
             <h2 class="font-bold text-lg py-4">{{ getmonth($month) }}</h2>
             <div class="grid grid-cols-7 gap-1 rounded-full">
-                @foreach (getAllDaysInMonth($checkin->created_at) as $day)
-
+                @foreach (getAllDaysInMonth($checkins->first()->created_at) as $day)
                 @php
                 $bgColor = 'bg-white'; // default color if not in the database
+                $checkinForDay = $checkins->first(function ($checkin) use ($day) {
+                return getDay($checkin->created_at) == $day['day_of_month'];
+                });
 
-                if ($day['day_of_month'] == getDay($checkin->created_at)) {
-                $status = checkinStatus($checkin->created_at);
+                if ($checkinForDay) {
+                $status = checkinStatus($checkinForDay->created_at);
                 if ($status == 'late') {
                 $bgColor = 'bg-red-200';
                 } else {
@@ -119,18 +104,18 @@
                 }
                 @endphp
 
-                <div class="text-center border rounded-full aspect-square flex flex-col justify-center {{$bgColor}} relative md:w-20 md:h-20 w-14 h-14">
+                <div id="day" class="text-center border rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
                     <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
                     <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
                     <span class="md:text-[9px] text-[8px]">
-                        {{getTime($checkin->created_at)}}
+                        {{ $checkinForDay ? getTime($checkinForDay->created_at) : '' }}
                     </span>
                 </div>
                 @endforeach
             </div>
         </x-bladewind::card>
-
         @endforeach
+
     </div>
 
 

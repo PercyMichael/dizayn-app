@@ -24,7 +24,7 @@
                 <!-- bg-[#2422DE] -->
                 <form method="POST" action="/email/verification-notification">
                     @csrf
-                    <button class="flex gap-x-2 items-center px-10 py-3 text-xl font-medium text-white focus:outline-none bg-green-700 hover:bg-green-800 rounded-full" type="submit">Click here to request another</button>.
+                    <x-bladewind.button color="green" can_submit="true">Click here to request another</x-bladewind.button>.
                 </form>
                 @endif
             </div>
