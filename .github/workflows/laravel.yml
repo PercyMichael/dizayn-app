@@ -14,6 +14,14 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
 
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16" # Specify the Node.js version you need
+
+      - name: 📂 Install dependencies
+        run: npm install
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
@@ -29,3 +37,8 @@ jobs:
             **/node_modules/**
             .editorconfig
             .env.example
+
+      - name: 🔒 Set file permissions
+        run: |
+          sudo chmod -R 755 .
+          sudo chown -R $USER:$USER .
