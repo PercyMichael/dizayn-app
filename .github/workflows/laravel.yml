@@ -1,9 +1,15 @@
-on: push
 name: 🚀 Deploy website on push
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
+
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2.3.2
@@ -12,7 +18,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3" # Adjust the PHP version as needed
-           extensions: mbstring, xml, ctype, json, mysqli, pdo_mysql, openssl, tokenizer, bcmath, zip
+          extensions: mbstring, xml, ctype, json, mysqli, pdo_mysql, openssl, tokenizer, bcmath, zip
 
       - name: 🛠 Set up Node.js
         uses: actions/setup-node@v2
