@@ -12,6 +12,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3" # Adjust the PHP version as needed
+           extensions: mbstring, xml, ctype, json, mysqli, pdo_mysql, openssl, tokenizer, bcmath, zip
 
       - name: 🛠 Set up Node.js
         uses: actions/setup-node@v2
@@ -34,7 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /
-          exclude: .git*,node_modules,.editorconfig,tests,tmp*.lock,*.md,**/vite.config.js,**/webpack.mix.js,**/package*.json,**/phpunit.xml,**/.env*,**/storage/debugbar,**/storage/framework/cache,**/storage/framework/sessions,**/storage/framework/testing,**/storage/framework/views,**/storage/logs
+          exclude: .git*,node_modules,*.editorconfig,tests,tmp*.lock,*.md,**/vite.config.js,**/webpack.mix.js,**/package*.json,**/phpunit.xml,**/.env*,**/storage/debugbar,**/storage/framework/cache,**/storage/framework/sessions,**/storage/framework/testing,**/storage/framework/views,**/storage/logs
 
       - name: 🧑‍🔧 Set permissions
         run: |
