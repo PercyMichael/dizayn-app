@@ -34,4 +34,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /
-          exclude: .git*,node_modules,tests,tmp*.lock,*.md,**/vite.config.js,**/webpack.mix.js,**/package*.json,**/phpunit.xml,**/.env*,**/storage/debugbar,**/storage/framework/cache,**/storage/framework/sessions,**/storage/framework/testing,**/storage/framework/views,**/storage/logs
+          exclude: .git*,node_modules,.editorconfig,tests,tmp*.lock,*.md,**/vite.config.js,**/webpack.mix.js,**/package*.json,**/phpunit.xml,**/.env*,**/storage/debugbar,**/storage/framework/cache,**/storage/framework/sessions,**/storage/framework/testing,**/storage/framework/views,**/storage/logs
+
+      - name: 🧑‍🔧 Set permissions
+        run: |
+          chmod -R 755 storage
+          chmod -R 755 bootstrap/cache
