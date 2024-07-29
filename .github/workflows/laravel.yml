@@ -20,14 +20,9 @@ jobs:
           server: ${{ secrets.SERVER }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          passive: true
           server-dir: /
           local-dir: ./ # Local directory to deploy
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            .editorconfig
-            .env.example
-            .gitignore
-            .gitattributes
