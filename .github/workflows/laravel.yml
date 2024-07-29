@@ -12,59 +12,32 @@ jobs:
 
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2.3.2
 
-      - name: 🛠 Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3" # Adjust the PHP version as needed
-          extensions: mbstring, xml, ctype, json, mysqli, pdo_mysql, openssl, tokenizer, bcmath, zip
+      # - name: 🛠 Set up PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: "8.3" # Adjust the PHP version as needed
+      #     extensions: mbstring, xml, ctype, json, mysqli, pdo_mysql, openssl, tokenizer, bcmath, zip
 
-      - name: 🛠 Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18" # Adjust the Node.js version as needed
+      # - name: 🛠 Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "18" # Adjust the Node.js version as needed
 
-      - name: 🧑‍🔧 Install Composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
+      # - name: 🧑‍🔧 Install Composer dependencies
+      #   run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
 
-      - name: 🧑‍🔧 Install NPM dependencies
-        run: npm install
+      # - name: 🧑‍🔧 Install NPM dependencies
+      #   run: npm install
 
-      - name: 🛠 Build assets using Vite
-        run: npm run build
+      # - name: 🛠 Build assets using Vite
+      #   run: npm run build
 
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: ${{ secrets.SERVER }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           server-dir: /
-          exclude: |
-            .git*
-            node_modules
-            tests
-            tmp*.lock
-            *.md
-            **/vite.config.js
-            **/webpack.mix.js
-            **/package*.json
-            **/phpunit.xml
-            **/.env*
-            **/storage/debugbar
-            **/storage/framework/cache
-            **/storage/framework/sessions
-            **/storage/framework/testing
-            **/storage/framework/views
-            **/storage/logs
-            .editorconfig
-            .eslintrc.js
-            .prettierrc
-            .stylelintrc
-            .vscode
-
-      - name: 🧑‍🔧 Set permissions
-        run: |
-          chmod -R 755 storage
-          chmod -R 755 bootstrap/cache
