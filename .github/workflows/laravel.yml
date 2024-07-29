@@ -11,7 +11,7 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ${{ secrets.SERVER }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          server-dir: /home/spiniohu/app.dizayn.ug/
+          server: ftp.spindjs.net
+          username: laravel@dizayn.ug
+          password: MyHrmZhup8RdJ36
+          server-dir: /home/spiniohu/dizayn.ug/laravel/
