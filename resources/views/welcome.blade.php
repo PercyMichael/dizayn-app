@@ -91,11 +91,10 @@
             </div>
             @endif
 
-            <div class="flex gap-x-5">
+            <div class="flex gap-x-5 py-1">
                 <div class="flex items-center gap-x-1">
                     <x-bladewind::icon name="information-circle" type="solid" class="text-red-500" /><span class="text-sm text-gray-500">Late</span>
                 </div>
-                &nbsp;&nbsp;
                 <div class="flex items-center gap-x-1">
                     <x-bladewind::icon name="information-circle" type="solid" class="text-green-500" /><span class="text-sm text-gray-500">Intime</span>
                 </div>
