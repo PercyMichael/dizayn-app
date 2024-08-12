@@ -8,6 +8,7 @@
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
     @vite('resources/css/app.css')
+    <x-bladewind::notification position="bottom-right" />
 </head>
 
 <body class="bg-[#F4F4F4]">

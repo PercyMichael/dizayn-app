@@ -17,7 +17,7 @@
                 <x-slot:trigger>
                     <div class="flex space-x-2 items-center rounded-md">
                         <div class="grow">
-                            <x-bladewind::icon name="users" /> MEMBERS
+                            <x-bladewind::icon name="users" /> MEMBERS ({{$users->count()}})
                         </div>
                         <div>
                             <x-bladewind.icon name="chevron-down" class="!h-4 !w-4" />

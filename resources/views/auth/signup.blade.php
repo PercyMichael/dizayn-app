@@ -1,6 +1,6 @@
 <x-layout>
     <div class="flex flex-col max-w-screen-sm mx-auto justify-center items-center h-screen">
-        <img class="py-4 w-20" src="{{ asset('googlelogo_light_color_92x30dp.png') }}
+        <img class="py-4 w-20" src="{{ asset('Dizayn-Logo.png') }}
 " alt="logo">
         <x-bladewind::card class="w-4/5 px-10">
             @if (session('status'))

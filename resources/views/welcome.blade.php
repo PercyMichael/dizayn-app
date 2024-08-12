@@ -43,27 +43,41 @@
     <x-header :users="$allUsers" />
     <div class="mx-auto max-w-screen-md grid md:grid-cols-1 gap-6 p-4">
 
-        @if (session('successfull_checkin'))
-        <x-bladewind::alert type="success" show_close_icon="true" class="text-sm">
-            {{ session('successfull_checkin') }}
-        </x-bladewind::alert>
-        @endif
-
 
         @if (session('welcome'))
         <x-bladewind::alert type="success" show_close_icon="true" class="text-sm">
             {{ session('welcome') }}
         </x-bladewind::alert>
+        @endif
 
-        @else
+        @if (session('successfull_checkin'))
+        <script>
+            showNotification(
+                'Success',
+                "{{ session('successfull_checkin') }}"
+            );
+        </script>
+        <x-bladewind::alert type="success" show_close_icon="true" class="text-sm">
+            {{ session('successfull_checkin') }}
+        </x-bladewind::alert>
+        @endif
+
         <x-bladewind::card class="">
-            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Hi, <span class="text-green-600 dark:text-green-500">{{ucfirst(Auth::user()->name)}}</span></h1>
+            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+                Hi, <span class="text-green-600 dark:text-green-500">{{ucfirst(Auth::user()->name)}}</span>
+            </h1>
             <p class="text-lg font-normal text-gray-500 lg:text-xl">See a detailed overview of your office check-ins for 2024.</p>
+
+            <small class="text-gray-500">To account for the time it takes to turn on the computer,
+                <span class="text-green-600 dark:text-green-500">5 minutes</span>
+                have been subtracted</small>
             @if ($checkedInToday==false)
             <div class="flex justify-between items-center py-4 border-t mt-4">
                 <div class="flex flex-col">
+                    <!-- CURENT DATE AND TIME -->
                     <div id="time" class="font-extrabold text-lg text-green-500"></div>
                     <div id="date" class="text-sm text-gray-500"></div>
+                    <!-- SEND CURENT DATE AND TIME -->
                     <span>
                         You havent checked in today!
                     </span>
@@ -76,9 +90,21 @@
                 </form>
             </div>
             @endif
+
+            <div class="flex gap-x-5">
+                <div class="flex items-center gap-x-1">
+                    <x-bladewind::icon name="information-circle" type="solid" class="text-red-500" /><span class="text-sm text-gray-500">Late</span>
+                </div>
+                &nbsp;&nbsp;
+                <div class="flex items-center gap-x-1">
+                    <x-bladewind::icon name="information-circle" type="solid" class="text-green-500" /><span class="text-sm text-gray-500">Intime</span>
+                </div>
+            </div>
+
         </x-bladewind::card>
-        @endif
+
     </div>
+
 
     <div class="mx-auto max-w-screen-md grid md:grid-cols-1 gap-6 px-4 py-8">
 
@@ -104,11 +130,15 @@
                 }
                 @endphp
 
-                <div id="day" class="text-center border rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
+                <div @if($checkinForDay)
+                    data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
+                    @endif
+
+                    id="day" class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
                     <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
                     <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
                     <span class="md:text-[9px] text-[8px]">
-                        {{ $checkinForDay ? getTime($checkinForDay->created_at) : '' }}
+                        {{ $checkinForDay ? getTime($checkinForDay->created_at->subMinutes(5)) : '' }}
                     </span>
                 </div>
                 @endforeach
