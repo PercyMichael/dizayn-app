@@ -120,7 +120,7 @@
                 });
 
                 if ($checkinForDay) {
-                $status = checkinStatus($checkinForDay->created_at);
+                $status = checkinStatus($checkinForDay->created_at->subMinutes(5));
                 if ($status == 'late') {
                 $bgColor = 'bg-red-200';
                 } else {
