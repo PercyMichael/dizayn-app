@@ -27,7 +27,7 @@ class SessionController extends Controller
         $validated = $request->validate(['email' => ['required'], 'password' => ['required']]);
 
         # code...
-        if (!Auth::attempt($validated)) {
+        if (!Auth::attempt($validated, true)) {
             throw ValidationException::withMessages(['invalid' => 'Sorry, invalid credentials']);
         }
 

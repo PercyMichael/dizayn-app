@@ -42,7 +42,7 @@
                     @foreach ($lateCheckins as $checkin)
                     <p class="text-sm text-gray-500 truncate py-1">
                         <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded">
-                            {{ $checkin->created_at->format('D, jS h:ia') }}
+                            {{ $checkin->created_at->subMinutes(5)->format('D, jS h:ia') }}
                         </span>
                     </p>
                     @endforeach
