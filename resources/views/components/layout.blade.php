@@ -9,6 +9,9 @@
     <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
     @vite('resources/css/app.css')
     <x-bladewind::notification position="bottom-right" />
+    <title>
+        Dizayn | Checkin Reports
+    </title>
 </head>
 
 <body class="bg-[#F4F4F4]">
