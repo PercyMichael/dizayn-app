@@ -36,9 +36,9 @@
                 if ($checkinForDay) {
                 $status = checkinStatus($checkinForDay->created_at->subMinutes(5));
                 if ($status == 'late') {
-                $bgColor = 'bg-red-200';
+                $bgColor = 'bg-red-100 text-red-800 border-red-400';
                 } else {
-                $bgColor = 'bg-green-200';
+                $bgColor = 'bg-green-100 text-green-800 border-green-400';
                 }
                 }
                 @endphp

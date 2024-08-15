@@ -9,4 +9,10 @@ class Checkin extends Model
 {
     use HasFactory;
     protected $fillable = ['description', 'user_id'];
+
+    // Define the inverse relationship to User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

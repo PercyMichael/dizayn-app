@@ -45,4 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    // Define the relationship to Checkin
+    public function checkins()
+    {
+        return $this->hasMany(Checkin::class);
+    }
 }

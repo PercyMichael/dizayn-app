@@ -33,9 +33,11 @@ Route::middleware(['check.company.ip'])->group(function () {
             ->exists();
 
         // Fetch all users
-        $allUsers = User::all();
+        // Fetch all users with their check-ins
+        $allUsersWithCheckins = User::with('checkins')->get();
 
-        return view('welcome', compact('checkinsByMonth', 'checkedInToday', 'allUsers'));
+
+        return view('welcome', compact('checkinsByMonth', 'checkedInToday', 'allUsersWithCheckins'));
     })->middleware(['auth', 'verified']);
 
     Route::get('/user/{name}/{id}', function (Request $request) {
