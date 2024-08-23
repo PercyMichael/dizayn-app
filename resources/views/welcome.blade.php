@@ -63,9 +63,9 @@
             @if (session('successfull_checkin'))
             <script>
                 showNotification(
-                    'Success',
-                    "{{ session('successfull_checkin') }}"
-                );
+                        'Success',
+                        "{{ session('successfull_checkin') }}"
+                    );
             </script>
             <x-bladewind::alert type="success" show_close_icon="true" class="text-sm">
                 {{ session('successfull_checkin') }}
@@ -75,15 +75,17 @@
 
             <!-- TOP CARD -->
             <x-bladewind::card>
-                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                    Hi, <span class="text-green-600 dark:text-green-500">{{ucfirst(Auth::user()->name)}}</span>
+                <h1
+                    class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+                    Hi, <span class="text-green-600 dark:text-green-500">{{ ucfirst(Auth::user()->name) }}</span>
                 </h1>
-                <p class="text-lg font-normal text-gray-500 lg:text-xl">See a detailed overview of your office check-ins for 2024.</p>
+                <p class="text-lg font-normal text-gray-500 lg:text-xl">See a detailed overview of your office check-ins
+                    for 2024.</p>
 
                 <small class="text-gray-500">To account for the time it takes to turn on the computer,
                     <span class="text-green-600 dark:text-green-500">5 minutes</span>
                     have been subtracted</small>
-                @if ($checkedInToday==false)
+                @if ($checkedInToday == false)
                 <div class="flex justify-between items-center py-4 border-t mt-4">
                     <div class="flex flex-col">
                         <!-- CURENT DATE AND TIME -->
@@ -104,11 +106,18 @@
                 @endif
 
                 <div class="flex gap-x-5 py-1">
+
                     <div class="flex items-center gap-x-1">
-                        <x-bladewind::icon name="information-circle" type="solid" class="text-red-500" /><span class="text-sm text-gray-500">Late</span>
+                        <x-bladewind::icon name="information-circle" type="solid" class="text-green-500" /><span
+                            class="text-sm text-gray-500">Intime</span>
                     </div>
                     <div class="flex items-center gap-x-1">
-                        <x-bladewind::icon name="information-circle" type="solid" class="text-green-500" /><span class="text-sm text-gray-500">Intime</span>
+                        <x-bladewind::icon name="information-circle" type="solid" class="text-red-500" /><span
+                            class="text-sm text-gray-500">Late</span>
+                    </div>
+                    <div class="flex items-center gap-x-1">
+                        <x-bladewind::icon name="information-circle" type="solid" class="text-blue-500" /><span
+                            class="text-sm text-gray-500">Absent</span>
                     </div>
                 </div>
 
@@ -127,6 +136,11 @@
                     return getDay($checkin->created_at) == $day['day_of_month'];
                     });
 
+                    $currentDate = now()->toDateString();
+                    $currentTime = now()->format('H:i:s'); // Get the current time in HH:MM:SS format
+                    $cutoffTime = '10:00:00'; // Define the cutoff time as 10 AM
+                    $absent=false;
+
                     if ($checkinForDay) {
                     $status = checkinStatus($checkinForDay->created_at->subMinutes(5));
                     if ($status == 'late') {
@@ -134,21 +148,36 @@
                     } else {
                     $bgColor = 'bg-green-100 text-green-800 border-green-400';
                     }
-                    }
-                    @endphp
+                    } else {
+                    // If no check-in, check if it's a weekday and the date is less than today
 
-                    <div @if($checkinForDay)
-                        data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
-                        @endif
+                    if ($day['day_of_week'] !== 'Sat' && $day['day_of_week'] !== 'Sun' && $day['day_of_month'] <=
+                        now()->day) {
+                        $absent = true;
 
-                        id="day" class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
-                        <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
-                        <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
-                        <span class="md:text-[9px] text-[8px]">
-                            {{ $checkinForDay ? getTime($checkinForDay->created_at->subMinutes(5)) : '' }}
-                        </span>
-                    </div>
-                    @endforeach
+                        if (now()->day) {
+                        $bgColor='';
+                        }
+                        else{
+                        $bgColor='bg-blue-100 text-blue-800 border-blue-400';
+                        }
+                        }
+
+                        }
+
+                        @endphp
+
+                        <div @if ($checkinForDay) data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
+                            @endif id="day"
+                            class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
+                            <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
+                            <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
+                            <span class="md:text-[9px] text-[8px]">
+                                {{ $checkinForDay ? getTime($checkinForDay->created_at->subMinutes(5)) : ($absent ? 'Absent' : '') }}
+                                {{ $day['day_of_week'] == 'Sat' || $day['day_of_week'] == 'Sun' ? 'Weekend' : '' }}
+                            </span>
+                        </div>
+                        @endforeach
                 </div>
             </x-bladewind::card>
             @endforeach
@@ -156,9 +185,9 @@
         </div>
 
         <!-- RIGHT CARD -->
-        <div class="right-card w-full md:w-1/4">
+        <!-- <div class="right-card w-full md:w-1/4">
             <x-right-card :users="$allUsersWithCheckins" />
-        </div>
+        </div> -->
         <!-- END RIGHT CARD -->
 
     </div>
