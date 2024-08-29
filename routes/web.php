@@ -16,7 +16,7 @@ Route::middleware(['check.company.ip'])->group(function () {
         $user = Auth::user();
 
         // Fetch check-ins for the authenticated user
-        $checkins = Checkin::where('user_id', $user->id)->get();
+        $checkins = Checkin::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         // dd($checkins);
 
         // Group check-ins by month
@@ -43,7 +43,7 @@ Route::middleware(['check.company.ip'])->group(function () {
     Route::get('/user/{name}/{id}', function (Request $request) {
 
         // Fetch check-ins for the authenticated user
-        $checkins = Checkin::where('user_id', $request->id)->get();
+        $checkins = Checkin::where('user_id', $request->id)->orderBy('created_at', 'desc')->get();
         // dd($checkins);
 
         // Group check-ins by month

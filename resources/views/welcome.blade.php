@@ -124,6 +124,10 @@
             </x-bladewind::card>
             <!-- END TOP CARD -->
 
+            <!-- EARLY BIRD CARD -->
+            <x-early-bird :users="$allUsersWithCheckins" />
+            <!-- END EARLY BIRD CARD -->
+
             <!-- MONTH CARD -->
             @foreach ($checkinsByMonth as $month => $checkins)
             <x-bladewind::card class="">
@@ -136,10 +140,11 @@
                     return getDay($checkin->created_at) == $day['day_of_month'];
                     });
 
-                    $currentDate = now()->toDateString();
-                    $currentTime = now()->format('H:i:s'); // Get the current time in HH:MM:SS format
-                    $cutoffTime = '10:00:00'; // Define the cutoff time as 10 AM
-                    $absent=false;
+                    $currentLoopedDate = Carbon\Carbon::createFromFormat('F j', getmonth($month) . ' ' .
+                    $day['day_of_month']);
+                    $isBeforeOrEqualToday = $currentLoopedDate->lessThanOrEqualTo(now()->startOfDay());
+
+                    $weekend=false;
 
                     if ($checkinForDay) {
                     $status = checkinStatus($checkinForDay->created_at->subMinutes(5));
@@ -148,36 +153,24 @@
                     } else {
                     $bgColor = 'bg-green-100 text-green-800 border-green-400';
                     }
-                    } else {
-                    // If no check-in, check if it's a weekday and the date is less than today
+                    }
 
-                    if ($day['day_of_week'] !== 'Sat' && $day['day_of_week'] !== 'Sun' && $day['day_of_month'] <=
-                        now()->day) {
-                        $absent = true;
+                    if ($day['day_of_week'] == 'Sat' || $day['day_of_week'] == 'Sun') {
+                    $weekend=true;
+                    }
+                    @endphp
 
-                        if (now()->day) {
-                        $bgColor='';
-                        }
-                        else{
-                        $bgColor='bg-blue-100 text-blue-800 border-blue-400';
-                        }
-                        }
-
-                        }
-
-                        @endphp
-
-                        <div @if ($checkinForDay) data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
-                            @endif id="day"
-                            class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }}">
-                            <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
-                            <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
-                            <span class="md:text-[9px] text-[8px]">
-                                {{ $checkinForDay ? getTime($checkinForDay->created_at->subMinutes(5)) : ($absent ? 'Absent' : '') }}
-                                {{ $day['day_of_week'] == 'Sat' || $day['day_of_week'] == 'Sun' ? 'Weekend' : '' }}
-                            </span>
-                        </div>
-                        @endforeach
+                    <div @if ($checkinForDay) data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
+                        @endif id="day"
+                        class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }} {{$checkinForDay == null && $isBeforeOrEqualToday && $weekend==false ? 'bg-blue-200 text-blue-800 border-blue-400' : ''}}">
+                        <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
+                        <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
+                        <span class="md:text-[9px] text-[8px]">
+                            {{ $checkinForDay ? getTime($checkinForDay->created_at->subMinutes(5)) : ($weekend ?
+                            'Weekend' : ($checkinForDay == null && $isBeforeOrEqualToday ? 'Absent' : '')) }}
+                        </span>
+                    </div>
+                    @endforeach
                 </div>
             </x-bladewind::card>
             @endforeach
@@ -185,9 +178,9 @@
         </div>
 
         <!-- RIGHT CARD -->
-        <!-- <div class="right-card w-full md:w-1/4">
+        {{-- <div class="right-card w-full md:w-1/4">
             <x-right-card :users="$allUsersWithCheckins" />
-        </div> -->
+        </div> --}}
         <!-- END RIGHT CARD -->
 
     </div>

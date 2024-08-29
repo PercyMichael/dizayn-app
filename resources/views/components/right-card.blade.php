@@ -29,13 +29,13 @@
             <div class="flex items-center space-x-4 rtl:space-x-reverse">
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate">
-                        {{ $user->name }}
+                        {{ ucfirst($user->name) }}
                     </p>
 
                     @php
                     // Filter late check-ins for the user
                     $lateCheckins = $user->checkins->filter(function ($checkin) {
-                    return checkinStatus($checkin->created_at) === 'late';
+                    return checkinStatus($checkin->created_at->subMinutes(5)) === 'late';
                     });
                     @endphp
 
@@ -49,7 +49,8 @@
 
                 </div>
                 <div class="flex flex-col items-center text-base font-semibold">
-                    <div class="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full">
+                    <div
+                        class="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full">
                         {{ $lateCheckins->count() }}
                     </div>
                 </div>

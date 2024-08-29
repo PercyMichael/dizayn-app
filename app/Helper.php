@@ -23,7 +23,8 @@ function getAllDaysInMonth($dateTime)
 
         $days[] = [
             'day_of_week' => $date->format('D'), // e.g., 'Sun'
-            'day_of_month' => $date->format('j'),  // e.g., '1'
+            'day_of_month' => $date->format('j'),
+            'year' => $date->format('Y'), // e.g., '1'
             'checkin' => $date->format('h:ia')
 
         ];
@@ -64,4 +65,13 @@ function checkinStatus($date)
     $deadline_object = new DateTime($date_object->format('Y-m-d') . ' ' . $deadline);
 
     return $date_object <= $deadline_object ? 'intime' : 'late';
+}
+
+function earlyBird($date)
+{
+    $deadline = '8:20:00am';
+    $date_object = new DateTime($date);
+    $deadline_object = new DateTime($date_object->format('Y-m-d') . ' ' . $deadline);
+
+    return $date_object <= $deadline_object ? 'early' : 'late';
 }
