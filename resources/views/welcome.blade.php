@@ -162,7 +162,7 @@
 
                     <div @if ($checkinForDay) data-inverted data-tooltip="{{ getTime($checkinForDay->created_at) }}"
                         @endif id="day"
-                        class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{ $bgColor }} {{$checkinForDay == null && $isBeforeOrEqualToday && $weekend==false ? 'bg-blue-200 text-blue-800 border-blue-400' : ''}}">
+                        class="text-center border cursor-pointer rounded-full aspect-square flex flex-col justify-center relative md:w-20 md:h-20 w-14 h-14 {{$checkinForDay == null && $isBeforeOrEqualToday && $weekend==false ? 'bg-blue-100 text-blue-800 border-blue-400' : $bgColor }}">
                         <span class="md:text-[9px] text-[8px]">{{ $day['day_of_week'] }}</span>
                         <span class="font-semibold font-abril">{{ $day['day_of_month'] }}</span>
                         <span class="md:text-[9px] text-[8px]">
