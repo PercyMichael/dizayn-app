@@ -24,12 +24,17 @@
 
                 @csrf
                 <div>
-                    <x-bladewind.input label="Your email" prefix="envelope" prefix_is_icon="true" type="email" name="email" placeholder="name@company.com" required />
+                    <x-bladewind.input label="Your email" prefix="envelope" prefix_is_icon="true" type="email"
+                        name="email" placeholder="name@company.com" required />
                 </div>
 
 
                 <div>
-                    <x-bladewind.input label="Your password" prefix="key" prefix_is_icon="true" type="password" name="password" placeholder="******" required viewable />
+                    <x-bladewind.input label="Your password" prefix="key" prefix_is_icon="true" type="password"
+                        name="password" placeholder="******" required viewable />
+                    <p class="text-right">
+                        <a href="{{ route('password.request') }}" class="text-green-500">Forgot Password?</a>
+                    </p>
                 </div>
 
 
@@ -38,6 +43,7 @@
 
 
             </form>
+
 
             <p class="text-center py-8">Don't have an account? <a href="/signup" class="text-green-500">Sign up</a> </p>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterUser;
 use App\Http\Controllers\SessionController;
 use App\Models\Checkin;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 Route::middleware(['check.company.ip'])->group(function () {
     // Your routes here
@@ -100,5 +102,14 @@ Route::middleware(['check.company.ip'])->group(function () {
     //finish auth
 
 
+    //forgot password
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->middleware('guest')->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->middleware('guest')->name('password.email');
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'passwordResetForm'])->middleware('guest')->name('password.reset');
+    Route::post('/password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
+    // Birthday route
+    Route::get('/birthdays', function () {
+        return view('birthdays');
+    })->middleware(['auth', 'verified']);
 });

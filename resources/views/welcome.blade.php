@@ -72,21 +72,25 @@
             </x-bladewind::alert>
             @endif
 
+            <x-bladewind::card>
+                <x-tab />
+            </x-bladewind::card>
+
 
             <!-- TOP CARD -->
             <x-bladewind::card>
                 <h1
-                    class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+                    class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
                     Hi, <span class="text-green-600 dark:text-green-500">{{ ucfirst(Auth::user()->name) }}</span>
                 </h1>
-                <p class="text-lg font-normal text-gray-500 lg:text-xl">See a detailed overview of your office check-ins
+                <p class="text-lg font-normal text-gray-600 lg:text-xl">See a detailed overview of your office check-ins
                     for 2024.</p>
 
                 <small class="text-gray-500">To account for the time it takes to turn on the computer,
                     <span class="text-green-600 dark:text-green-500">5 minutes</span>
                     have been subtracted</small>
                 @if ($checkedInToday == false)
-                <div class="flex justify-between items-center py-4 border-t mt-4">
+                <div class="flex md:flex-row flex-col md:items-center justify-between py-4 border-t mt-4 gap-y-4">
                     <div class="flex flex-col">
                         <!-- CURENT DATE AND TIME -->
                         <div id="time" class="font-extrabold text-lg text-green-500"></div>
@@ -96,16 +100,19 @@
                             You havent checked in today!
                         </span>
                     </div>
+
                     <form action="/checkin" method="post">
                         @csrf
-                        <x-bladewind.button size="medium" uppercasing="flase" color="green" can_submit="true">
+                        <x-bladewind.button class="w-full" size="medium" uppercasing="flase" color="green"
+                            can_submit="true">
                             Checkin Now!
                         </x-bladewind.button>
                     </form>
                 </div>
                 @endif
 
-                <div class="flex gap-x-5 py-1">
+
+                <div class="flex gap-x-5 justify-center">
 
                     <div class="flex items-center gap-x-1">
                         <x-bladewind::icon name="information-circle" type="solid" class="text-green-500" /><span
@@ -120,7 +127,6 @@
                             class="text-sm text-gray-500">Absent</span>
                     </div>
                 </div>
-
             </x-bladewind::card>
             <!-- END TOP CARD -->
 

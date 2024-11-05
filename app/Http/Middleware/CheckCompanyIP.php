@@ -16,7 +16,7 @@ class CheckCompanyIP
     public function handle(Request $request, Closure $next): Response
     {
 
-        $allowedIPs = ['102.209.128.233', '127.0.0.1']; // Replace with your company's IPs
+        $allowedIPs = ['102.209.128.233', '127.0.0.1', '102.213.192.194']; // Replace with your company's IPs
 
         if (!in_array($_SERVER['REMOTE_ADDR'], $allowedIPs)) {
             abort(403, "Unauthorized access. {{$request->ip()}}");
